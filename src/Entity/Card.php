@@ -2,11 +2,21 @@
 
 namespace App\Entity;
 
-use App\Repository\CardRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\CardRepository;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
  * @ORM\Entity(repositoryClass=CardRepository::class)
+ * @ApiResource(
+ *  normalizationContext={
+ *      "groups"={"cards_read", "boxes_read"}
+ *  }
+ * )
+ * @ApiFilter(SearchFilter::class, properties={"box.title", "nextAt"})
  */
 class Card
 {
@@ -14,37 +24,44 @@ class Card
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"cards_read", "boxes_read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"cards_read", "boxes_read"})
      */
     private $recto;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"cards_read", "boxes_read"})
      */
     private $verso;
 
     /**
      * @ORM\Column(type="string", length=5)
+     * @Groups({"cards_read", "boxes_read"})
      */
     private $face;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"cards_read", "boxes_read"})
      */
     private $compartment;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"cards_read", "boxes_read"})
      */
     private $nextAt;
 
     /**
      * @ORM\ManyToOne(targetEntity=Box::class, inversedBy="card")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"cards_read"})
      */
     private $box;
 

@@ -2,13 +2,20 @@
 
 namespace App\Entity;
 
-use App\Repository\BoxRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\BoxRepository;
+use Doctrine\Common\Collections\Collection;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=BoxRepository::class)
+ * @ApiResource(
+ *  normalizationContext={
+ *      "groups"={"boxes_read"}
+ *  }
+ * )
  */
 class Box
 {
@@ -16,21 +23,26 @@ class Box
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"cards_read", "boxes_read"})
+     * 
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"cards_read", "boxes_read"})
      */
     private $title;
 
     /**
      * @ORM\OneToMany(targetEntity=Card::class, mappedBy="box", orphanRemoval=true)
+     * @Groups({"boxes_read"})
      */
     private $card;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="boxes")
+     * @Groups({"boxes_read"})
      */
     private $user;
 
