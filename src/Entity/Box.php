@@ -6,14 +6,21 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Repository\BoxRepository;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=BoxRepository::class)
  * @ApiResource(
- *  normalizationContext={
- *      "groups"={"boxes_read"}
+ *  normalizationContext={"groups"={"boxes_read"}},
+ *  denormalizationContext={"disable_type_enforcement"=true},
+ *  subresourceOperations={
+ *     "api_boxes_cards_get_subresource"={
+ *         "method"="GET",
+ *         "normalization_context"={"groups"={"boxes_cards_read"}}
+ *     }
  *  }
  * )
  */
@@ -23,22 +30,24 @@ class Box
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"cards_read", "boxes_read"})
-     * 
+     * @Groups({"cards_read", "boxes_read", "users_read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"cards_read", "boxes_read"})
+     * @Assert\NotBlank
+     * @Assert\Length(min=3, max=255)
+     * @Groups({"cards_read", "boxes_read", "users_read"})
      */
     private $title;
 
     /**
      * @ORM\OneToMany(targetEntity=Card::class, mappedBy="box", orphanRemoval=true)
      * @Groups({"boxes_read"})
+     * @ApiSubresource
      */
-    private $card;
+    private $cards;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="boxes")
@@ -48,7 +57,7 @@ class Box
 
     public function __construct()
     {
-        $this->card = new ArrayCollection();
+        $this->cards = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -71,15 +80,15 @@ class Box
     /**
      * @return Collection|Card[]
      */
-    public function getCard(): Collection
+    public function getCards(): Collection
     {
-        return $this->card;
+        return $this->cards;
     }
 
     public function addCard(Card $card): self
     {
-        if (!$this->card->contains($card)) {
-            $this->card[] = $card;
+        if (!$this->cards->contains($card)) {
+            $this->cards[] = $card;
             $card->setBox($this);
         }
 
@@ -88,8 +97,8 @@ class Box
 
     public function removeCard(Card $card): self
     {
-        if ($this->card->contains($card)) {
-            $this->card->removeElement($card);
+        if ($this->cards->contains($card)) {
+            $this->cards->removeElement($card);
             // set the owning side to null (unless already changed)
             if ($card->getBox() === $this) {
                 $card->setBox(null);

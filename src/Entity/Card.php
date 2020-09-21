@@ -6,15 +6,21 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Repository\CardRepository;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
 use Symfony\Component\Serializer\Annotation\Groups;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=CardRepository::class)
  * @ApiResource(
- *  normalizationContext={
- *      "groups"={"cards_read", "boxes_read"}
- *  }
+ *  subresourceOperations={
+ *      "api_boxes_cards_get_subresource"={
+ *          "normalization_context"={"groups"={"cards_subresource"}}
+ *      }
+ *  },
+ *  normalizationContext={"groups"={"cards_read"}},
+ *  denormalizationContext={"disable_type_enforcement"=true}
  * )
  * @ApiFilter(SearchFilter::class, properties={"box.title", "nextAt"})
  */
@@ -24,42 +30,50 @@ class Card
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"cards_read", "boxes_read"})
+     * @Groups({"cards_read", "boxes_read", "cards_subresource"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"cards_read", "boxes_read"})
+     * @Assert\NotBlank
+     * @Groups({"cards_read", "boxes_read", "cards_subresource"})
      */
     private $recto;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"cards_read", "boxes_read"})
+     * @Assert\NotBlank
+     * @Groups({"cards_read", "boxes_read", "cards_subresource"})
      */
     private $verso;
 
     /**
      * @ORM\Column(type="string", length=5)
-     * @Groups({"cards_read", "boxes_read"})
+     * @Assert\NotBlank
+     * @Assert\Choice(choices={"recto", "verso"}, message="The face need to be 'recto' or 'verso'")
+     * @Groups({"cards_read", "boxes_read", "cards_subresource"})
      */
     private $face;
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"cards_read", "boxes_read"})
+     * @Assert\NotBlank
+     * @Assert\Range(min=1, max=7, invalidMessage="The value should be an integer between 1 and 7")
+     * @Groups({"cards_read", "boxes_read", "cards_subresource"})
      */
     private $compartment;
 
     /**
      * @ORM\Column(type="datetime")
-     * @Groups({"cards_read", "boxes_read"})
+     * @Assert\NotBlank
+     * @Assert\Type("\DateTimeInterface")
+     * @Groups({"cards_read", "boxes_read", "cards_subresource"})
      */
     private $nextAt;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Box::class, inversedBy="card")
+     * @ORM\ManyToOne(targetEntity=Box::class, inversedBy="cards")
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"cards_read"})
      */
@@ -111,7 +125,7 @@ class Card
         return $this->compartment;
     }
 
-    public function setCompartment(int $compartment): self
+    public function setCompartment($compartment): self
     {
         $this->compartment = $compartment;
 
