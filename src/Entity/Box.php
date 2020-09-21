@@ -51,6 +51,7 @@ class Box
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="boxes")
+     * @Assert\NotBlank(message="The user is required")s
      * @Groups({"boxes_read"})
      */
     private $user;
