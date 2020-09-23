@@ -38,7 +38,9 @@ class AppFixtures extends Fixture
 
             for ($b=0; $b < 5; $b++) { 
                 $box = new Box();
-                $box->setTitle($faker->title())
+                $box->setTitle($faker->word())
+                    ->setRecto($faker->word())
+                    ->setVerso($faker->word())
                     ->setUser($user);
     
                 $manager->persist($box);

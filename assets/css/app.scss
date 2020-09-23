@@ -1,0 +1,30 @@
+.card {
+    position: relative;
+    display: none; 
+
+    &:first-child {
+        display: block;
+
+        &:before, &:after {
+            content: "";
+            display: block;
+            position: absolute;
+            border: 1px solid grey;
+            height: 100%;
+            width: 100%;
+            background: #e9ecef;
+        }
+        
+        &:before {
+            z-index: -1;
+            top: -10px;
+            right: -10px;
+        }
+
+        &:after {
+            top: -20px;
+            right: -20px;
+            z-index: -2;    
+        }
+    }
+}

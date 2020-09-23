@@ -51,10 +51,24 @@ class Box
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="boxes")
-     * @Assert\NotBlank(message="The user is required")s
+     * @Assert\NotBlank(message="The user is required")
      * @Groups({"boxes_read"})
      */
     private $user;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
+     * @Groups({"cards_read", "boxes_read", "users_read"})
+     */
+    private $recto;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
+     * @Groups({"cards_read", "boxes_read", "users_read"})
+     */
+    private $verso;
 
     public function __construct()
     {
@@ -117,6 +131,30 @@ class Box
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getRecto(): ?string
+    {
+        return $this->recto;
+    }
+
+    public function setRecto(string $recto): self
+    {
+        $this->recto = $recto;
+
+        return $this;
+    }
+
+    public function getVerso(): ?string
+    {
+        return $this->verso;
+    }
+
+    public function setVerso(string $verso): self
+    {
+        $this->verso = $verso;
 
         return $this;
     }
