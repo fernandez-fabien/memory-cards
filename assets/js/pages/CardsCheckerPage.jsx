@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import cardsAPI from '../services/cardsAPI'
 import { toast } from 'react-toastify'
 import FlipCard from '../components/FlipCard'
+import cardMovement from '../services/cardMovement'
 
 const CardsChecker = ({history, match}) => {
     const { id = "" } = match.params
@@ -45,8 +46,9 @@ const CardsChecker = ({history, match}) => {
         getCurrentCard()
     }, [cards])
     
-    const verifyValue = (answer) => {
-        
+    const storeCard = (answer) => {
+        let updateCard = cardMovement.updateCard(card, answer)
+        cardsAPI.update(card.id, updateCard)
         unstackCard()
     }
 
@@ -60,7 +62,7 @@ const CardsChecker = ({history, match}) => {
     return (
         <div className="row justify-content-md-center mt-5 position-relative">
             {cards.map(c => (
-                <FlipCard key={c.id} card={c} submit={verifyValue} />
+                <FlipCard key={c.id} card={c} submit={storeCard} />
             ))}
         </div>
     )

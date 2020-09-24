@@ -25,7 +25,6 @@ const FlipCard = ({card, submit}) => {
     }
 
     const next = () => {
-        console.log(answer)
         submit(answer)
     }
 
@@ -39,7 +38,7 @@ const FlipCard = ({card, submit}) => {
                 <div className="card-header">
                     <h3>{card[card.face]}</h3>
                 </div>
-                <div className="card-body">
+                <div className="card-body mt-5">
                     <form onSubmit={handleSubmit}>
                         <div className="form-group">
                             <label>Valeur associée :</label>
@@ -51,7 +50,7 @@ const FlipCard = ({card, submit}) => {
                     </form>
                 </div>
             </div>
-            <div className="flip-card-back py-5">
+            <div className="flip-card-back">
                 <h3>{card[getOtherSide(card.face)]}</h3>
                 <button className="btn btn-info btn-sm mt-5" onClick={next}>Ranger</button>
             </div>
