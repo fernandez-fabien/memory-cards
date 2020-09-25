@@ -8,7 +8,7 @@ import cardsAPI from '../services/cardsAPI'
 import { toast } from 'react-toastify'
 import FormLoader from '../components/loaders/FormLoader'
 
-const CardPage = ({ match, history }) => {
+const ManageCardPage = ({ match, history }) => {
 
     const { id = "new" } = match.params
     
@@ -17,7 +17,7 @@ const CardPage = ({ match, history }) => {
         verso: "",
         compartment: 1,
         face: "recto",
-        nextAt: moment().add(1, 'days').format('DD-MM-YYYY'),
+        nextAt: moment().add(1, 'days').format('YYYY-MM-DD'),
         box: ""
     })
     
@@ -185,4 +185,4 @@ const CardPage = ({ match, history }) => {
     )
 }
 
-export default CardPage
+export default ManageCardPage

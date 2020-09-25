@@ -6,7 +6,7 @@ import { toast } from 'react-toastify'
 import TableLoader from '../components/loaders/TableLoader'
 
 
-const BoxesPage = (props) => {
+const ManageBoxesPage = (props) => {
 
     const [boxes, setBoxes] = useState([])
     const [currentPage, setCurrentPage] = useState(1)
@@ -128,4 +128,4 @@ const BoxesPage = (props) => {
     </>
 }
 
-export default BoxesPage
+export default ManageBoxesPage

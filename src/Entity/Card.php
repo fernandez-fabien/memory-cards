@@ -8,8 +8,9 @@ use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
 use Symfony\Component\Serializer\Annotation\Groups;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use Symfony\Component\Validator\Constraints as Assert;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
  * @ORM\Entity(repositoryClass=CardRepository::class)
@@ -22,7 +23,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *  normalizationContext={"groups"={"cards_read"}},
  *  denormalizationContext={"disable_type_enforcement"=true}
  * )
- * @ApiFilter(SearchFilter::class, properties={"box.title", "nextAt"})
+ * @ApiFilter(SearchFilter::class, properties={"box.title"})
+ * @ApiFilter(DateFilter::class, properties={"nextAt"})
+ * 
  */
 class Card
 {

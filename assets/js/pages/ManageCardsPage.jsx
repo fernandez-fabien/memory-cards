@@ -18,7 +18,7 @@ const STATUS_LABELS = {
     CANCELLED: "Annulée"
 }
 
-const CardsPage = ({ match, history }) => {
+const ManageCardsPage = ({ match, history }) => {
 
     const { id = "new" } = match.params
 
@@ -142,4 +142,4 @@ const CardsPage = ({ match, history }) => {
     </>
 }
 
-export default CardsPage
+export default ManageCardsPage

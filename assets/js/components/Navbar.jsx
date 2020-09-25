@@ -25,7 +25,10 @@ const Navbar = ({ history }) => {
         <div className="collapse navbar-collapse" id="navbarColor01">
         <ul className="navbar-nav mr-auto">
             <li className="nav-item">
-            <NavLink className="nav-link" to="/boxes">Boîtes</NavLink>
+                <NavLink className="nav-link" to="/box/selector">Boîtes</NavLink>
+            </li>
+            <li className="nav-item">
+                <NavLink className="nav-link" to="/boxes">Gérer mes données</NavLink>
             </li>
         </ul>
         <ul className="navbar-nav ml-auto">

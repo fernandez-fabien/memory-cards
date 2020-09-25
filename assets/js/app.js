@@ -7,15 +7,16 @@ import '../css/app.scss';
 import Navbar from './components/Navbar';
 import PrivateRoute from './components/PrivateRoute';
 import AuthContext from './contexts/AuthContext';
-import BoxPage from './pages/BoxPage';
-import CardPage from './pages/CardPage';
-import BoxesPage from './pages/BoxesPage';
+import ManageBoxPage from './pages/ManageBoxPage';
+import ManageCardPage from './pages/ManageCardPage';
+import ManageBoxesPage from './pages/ManageBoxesPage';
 import HomePage from './pages/HomePage';
-import CardsPage from './pages/CardsPage';
+import ManageCardsPage from './pages/ManageCardsPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import authAPI from './services/authAPI';
-import CardsChecker from './pages/CardsCheckerPage';
+import CardsCheckerPage from './pages/CardsCheckerPage';
+import BoxesChoicePage from './pages/BoxesChoicePage';
 
 
 let defaultAuthentificationState = authAPI.setup();
@@ -38,11 +39,12 @@ const App = () => {
                     <Switch>
                         <Route path="/login" component={LoginPage} />
                         <Route path="/register" component={RegisterPage} />
-                        <PrivateRoute path="/box/:id" component={CardsChecker} />
-                        <PrivateRoute path="/boxes/:id" component={BoxPage} />
-                        <PrivateRoute path="/cards/:id" component={CardPage} />
-                        <PrivateRoute path="/boxes" component={BoxesPage} />
-                        <PrivateRoute path="/box/:id/cards" component={CardsPage} />
+                        <PrivateRoute path="/box/selector" component={BoxesChoicePage} />
+                        <PrivateRoute path="/box/:id/checker" component={CardsCheckerPage} />
+                        <PrivateRoute path="/boxes/:id" component={ManageBoxPage} />
+                        <PrivateRoute path="/cards/:id" component={ManageCardPage} />
+                        <PrivateRoute path="/boxes" component={ManageBoxesPage} />
+                        <PrivateRoute path="/box/:id/cards" component={ManageCardsPage} />
                         <Route path="/" component={HomePage} />
                     </Switch>
                 </main>

@@ -5,7 +5,7 @@ import boxesAPI from '../services/boxesAPI'
 import { toast } from 'react-toastify'
 import FormLoader from '../components/loaders/FormLoader'
 
-const BoxPage = ({ match, history }) => {
+const ManageBoxPage = ({ match, history }) => {
 
     const { id = "new" } = match.params
 
@@ -117,4 +117,4 @@ const BoxPage = ({ match, history }) => {
     )
 }
 
-export default BoxPage
+export default ManageBoxPage

@@ -1,3 +1,4 @@
+import moment from 'moment'
 import axios from 'axios'
 import Cache from './cache'
 import { CARDS_API, BOXES_API } from '../config'
@@ -14,6 +15,12 @@ async function findAll(id) {
             Cache.set(`box.${id}.cards`, cards)
             return cards
         })
+}
+
+async function findCardsToTreat(id) {
+    return axios
+        .get(BOXES_API + "/" + id + "/cards?nextAt[after]=" + moment().format('YYYY-MM-DD'))
+        .then(response => response.data["hydra:member"])
 }
 
 async function find(id) {
@@ -88,6 +95,7 @@ function update(id, card) {
 
 export default {
     findAll,
+    findCardsToTreat,
     find,
     delete: deleteCard,
     create,
