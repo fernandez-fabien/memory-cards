@@ -47,9 +47,10 @@ class AppFixtures extends Fixture
     
                 for ($c=0; $c < mt_rand(5, 20); $c++) { 
                     $card = new Card();
+                    $days = mt_rand(0, 2);
                     $card->setRecto($faker->word())
                         ->setVerso($faker->word())
-                        ->setNextAt(new \DateTime("+3 days"))
+                        ->setNextAt(new \DateTime("+". $days ." days"))
                         ->setCompartment($faker->numberBetween(1, 7))
                         ->setFace($faker->randomElement(['recto', 'verso']))
                         ->setBox($box);
